@@ -124,7 +124,6 @@ import AVFoundation
      - parameter player: FRadioPlayer
      - parameter artworkURL: URL for the artwork from iTunes
      */
-    @objc optional func radioPlayer(_ player: FRadioPlayer, artworkDidChange artworkURL: URL?)
 }
 
 // MARK: - FRadioPlayer
@@ -209,6 +208,10 @@ open class FRadioPlayer: NSObject {
         didSet {
             playerItemDidChange()
         }
+    }
+    
+    public func getPlayer () -> AVPlayer?{
+        return self.player
     }
     
     /// Reachability for network interruption handling
