@@ -151,11 +151,10 @@ open class FRadioPlayer: NSObject {
     internal weak var oldDelegate: FRadioPlayerDelegate?
     
     open func setDelegate(delegate: FRadioPlayerDelegate){
-        if(self.delegate != nil){
+       
             self.oldDelegate = self.delegate
             self.oldDelegate?.radioPlayer(self, playerStopped: true)
-        }
-        self.delegate = delegate
+            self.delegate = delegate
     }
     
     
@@ -186,6 +185,7 @@ open class FRadioPlayer: NSObject {
         case .playing:
             return true
         case .stopped, .paused:
+            self.delegate?.radioPlayer(self, playerStopped: true)
             return false
         }
     }
@@ -300,6 +300,7 @@ open class FRadioPlayer: NSObject {
      */
     open func stop() {
         guard let player = player else { return }
+        self.delegate?.radioPlayer(self, playerStopped: true)
         player.replaceCurrentItem(with: nil)
         timedMetadataDidChange(rawValue: nil)
         playbackState = .stopped
@@ -401,6 +402,7 @@ open class FRadioPlayer: NSObject {
     }
     
     private func timedMetadataDidChange(rawValue: String?) {
+        self.oldDelegate?.radioPlayer(self, playerStopped: true)
         let parts = rawValue?.components(separatedBy: " - ")
         delegate?.radioPlayer?(self, metadataDidChange: parts?.first, trackName: parts?.last)
         delegate?.radioPlayer?(self, metadataDidChange: rawValue)
