@@ -153,7 +153,7 @@ open class FRadioPlayer: NSObject {
     
     open func setDelegate(delegate: FRadioPlayerDelegate){
        
-            self.oldDelegate = self.delegate
+//            self.oldDelegate = self.delegate
             self.oldDelegate?.radioPlayer(self, playerStopped: true)
             self.delegate = delegate
     }
