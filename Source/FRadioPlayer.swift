@@ -158,9 +158,9 @@ open class FRadioPlayer: NSObject {
             self.delegate = delegate
     }
     
-    var updateTimer: Timer?
+    open var updateTimer: Timer?
     
-    func setupTimer(){
+    open func setupTimer(){
         updateTimer = Timer.scheduledTimer(withTimeInterval: 1.0/60.0, repeats: true) { _ in
             self.delegate?.radioPlayer!(self, currentTime: self.currTime() , duration: self.duration())
         }
@@ -174,10 +174,10 @@ open class FRadioPlayer: NSObject {
     }
     
     
-    func currTime () -> Double {
+   open func currTime () -> Double {
         return self.getPlayer()?.currentTime().seconds ?? 0.0
     }
-    func duration() -> Double {
+    open func duration() -> Double {
         if let d = self.getPlayer()?.currentItem?.asset.duration {
             return d.seconds
         }
@@ -449,6 +449,7 @@ open class FRadioPlayer: NSObject {
     }
     
     private func resetPlayer() {
+        setupTimer()
         stop()
         playerItem = nil
         lastPlayerItem = nil
