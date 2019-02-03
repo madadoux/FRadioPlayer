@@ -151,6 +151,7 @@ open class FRadioPlayer: NSObject {
     internal weak var oldDelegate: FRadioPlayerDelegate?
     
     open func setDelegate(delegate: FRadioPlayerDelegate){
+       
             self.oldDelegate = self.delegate
             self.oldDelegate?.radioPlayer(self, playerStopped: true)
             self.delegate = delegate
@@ -202,9 +203,6 @@ open class FRadioPlayer: NSObject {
         didSet {
             guard oldValue != playbackState else { return }
             delegate?.radioPlayer(self, playbackStateDidChange: playbackState)
-            if(playbackState != .paused){
-             delegate?.radioPlayer(self, playerStopped: true)
-            }
         }
     }
     
