@@ -83,6 +83,9 @@ import AVFoundation
      - parameter player: FRadioPlayer
      - parameter state: FRadioPlayerState
      */
+    func radioPlayer(_ player: FRadioPlayer, playerStopped state: Bool)
+    
+    
     func radioPlayer(_ player: FRadioPlayer, playerStateDidChange state: FRadioPlayerState)
     
     /**
@@ -144,7 +147,17 @@ open class FRadioPlayer: NSObject {
      The delegate object for the `FRadioPlayer`.
      Implement the methods declared by the `FRadioPlayerDelegate` object to respond to user interactions and the player output.
      */
-    open weak var delegate: FRadioPlayerDelegate?
+    internal weak var delegate: FRadioPlayerDelegate?
+    internal weak var oldDelegate: FRadioPlayerDelegate?
+    
+    open func setDelegate(delegate: FRadioPlayerDelegate){
+        if(self.delegate != nil){
+            self.oldDelegate = self.delegate
+            self.oldDelegate?.radioPlayer(self, playerStopped: true)
+        }
+        self.delegate = delegate
+    }
+    
     
     /// The player current radio URL
     open var radioURL: URL? {
