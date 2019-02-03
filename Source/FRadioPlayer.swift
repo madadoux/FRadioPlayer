@@ -85,6 +85,7 @@ import AVFoundation
      */
     func radioPlayer(_ player: FRadioPlayer, playerStopped state: Bool)
     
+   @objc optional  func radioPlayer(_ player: FRadioPlayer, currentTime: Double, duration:Double)
     
     func radioPlayer(_ player: FRadioPlayer, playerStateDidChange state: FRadioPlayerState)
     
@@ -157,6 +158,13 @@ open class FRadioPlayer: NSObject {
             self.delegate = delegate
     }
     
+    var updateTimer: Timer?
+    
+    func setupTimer(){
+        updateTimer = Timer.scheduledTimer(withTimeInterval: 1.0/60.0, repeats: true) { _ in
+            self.delegate?.radioPlayer!(self, currentTime: self.currTime() , duration: self.duration())
+        }
+    }
     
     /// The player current radio URL
     open var radioURL: URL? {
@@ -164,6 +172,18 @@ open class FRadioPlayer: NSObject {
             radioURLDidChange(with: radioURL)
         }
     }
+    
+    
+    func currTime () -> Double {
+        return self.getPlayer()?.currentTime().seconds ?? 0.0
+    }
+    func duration() -> Double {
+        if let d = self.getPlayer()?.currentItem?.asset.duration {
+            return d.seconds
+        }
+        return 0.0
+    }
+    
     
     /// The player starts playing when the radioURL property gets set. (default == true)
     open var isAutoPlay = true
