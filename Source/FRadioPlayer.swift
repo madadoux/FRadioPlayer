@@ -447,7 +447,16 @@ open class FRadioPlayer: NSObject {
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(handleInterruption), name: AVAudioSession.interruptionNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleRouteChange), name: AVAudioSession.routeChangeNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(playerItemDidPlayToEndTime), name:  NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
+
         #endif
+    }
+    
+    @objc func playerItemDidPlayToEndTime (){
+         #if os(iOS)
+        
+        delegate?.radioPlayer(self, playerStopped: true)
+          #endif
     }
     
     // MARK: - Responding to Interruptions
